@@ -1,19 +1,25 @@
 backend:
-  name: github
-  repo: nanaduo1/my-website
-  branch: main
+  name: git-gateway
+  branch: main # 确保这里是你的主要分支名称，通常是 main 或 master
 
-media_folder: "images"
-public_folder: "/images"
+media_folder: "images/uploads" # 图片上传后保存的位置
+public_folder: "/images/uploads" # 网页引用图片的路径
 
 collections:
-  - name: "prompts"
-    label: "Prompts"
-    folder: "content/prompts"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Prompt", name: "prompt", widget: "text" }
-      - { label: "Tags", name: "tags", widget: "list" }
+  - name: "data"
+    label: "Data"
+    files:
+      - name: "prompts"
+        label: "Prompts Library"
+        file: "prompts.json" # CMS 将所有数据写入这个文件
+        label_singular: "Prompt Entry"
+        fields:
+          - label: "Prompts List"
+            name: "items"
+            widget: "list"
+            fields:
+              - {label: "ID (Unique Number)", name: "id", widget: "string", default: "001"}
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Image", name: "image", widget: "image"}
+              - {label: "AI Tool", name: "tool", widget: "select", options: ["Midjourney V6", "Gemini Pro", "Stable Diffusion XL", "DALL-E 3", "Niji Journey"]}
+              - {label: "Prompt Text", name: "prompt", widget: "text"}
