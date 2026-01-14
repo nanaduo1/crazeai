@@ -1,0 +1,19 @@
+backend:
+  name: github
+  repo: nanaduo1/my-website
+  branch: main
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "prompts"
+    label: "Prompts"
+    folder: "content/prompts"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Prompt", name: "prompt", widget: "text" }
+      - { label: "Tags", name: "tags", widget: "list" }
