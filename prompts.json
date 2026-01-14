@@ -1,0 +1,11 @@
+{
+  "items": [
+    {
+      "id": "001",
+      "title": "Welcome Demo",
+      "image": "https://nanaduo1.github.io/crazeai/images/part1/IMG_1612.jpeg",
+      "tool": "Midjourney V6",
+      "prompt": "This is a demo prompt setup. You can delete this later via the CMS."
+    }
+  ]
+}
