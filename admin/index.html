@@ -3,275 +3,265 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>CRAZE.AI | SYSTEM ADMIN</title>
+  <title>CRAZE.AI | MOBILE ADMIN</title>
   
-  <!-- 1. 字体 & 图标 (与前台保持一致) -->
+  <!-- 字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
-  
-  <!-- 2. Tailwind CSS (用于预览组件) -->
+  <!-- Tailwind (用于预览) -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- 3. Netlify Identity -->
+  <!-- Netlify Identity -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
-  <!-- 4. 深度定制 CSS -->
   <style>
+    /* =========================================
+       全局变量与基础设置
+       ========================================= */
     :root {
       --neon-blue: #00f3ff;
       --neon-red: #ff0055;
-      --bg-dark: #050505;
+      --bg-dark: #000000;
       --bg-panel: #0a0a0a;
-      --text-main: #e2e8f0;
-      --border-color: #333;
+      --border: #222;
     }
 
-    /* --- 全局重置 --- */
     body {
-      font-family: 'Rajdhani', sans-serif !important;
       background-color: var(--bg-dark) !important;
-      color: var(--text-main) !important;
+      font-family: 'Rajdhani', sans-serif !important;
+      -webkit-font-smoothing: antialiased;
     }
 
-    h1, h2, h3, h4, h5, h6 {
-      font-family: 'Orbitron', sans-serif !important;
-      text-transform: uppercase;
-      letter-spacing: 2px;
+    /* 暴力移除默认的白色背景 */
+    div {
+      scrollbar-width: thin;
+      scrollbar-color: #333 #000;
     }
 
-    /* --- 顶部导航栏 (App Header) --- */
+    /* =========================================
+       UI 组件暴力重写 (桌面 + 移动通用)
+       ========================================= */
+    
+    /* 顶部导航条 */
     [class*="AppHeader-header"] {
-      background-color: rgba(5, 5, 5, 0.95) !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-      backdrop-filter: blur(10px);
-      height: 60px !important;
+      background-color: rgba(0,0,0,0.9) !important;
+      border-bottom: 1px solid var(--neon-blue) !important;
+      height: 64px !important;
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
     }
 
-    /* 面包屑导航文字 */
-    [class*="AppHeader-breadcrumb"] {
-      color: var(--neon-blue) !important;
-      font-weight: bold;
-    }
-
-    /* 汉堡菜单 (移动端) */
-    button[class*="AppHeader-menuButton"] {
-      color: white !important;
-    }
-
-    /* --- 侧边栏 (Sidebar) --- */
+    /* 侧边栏 */
     [class*="SidebarContainer"] {
       background-color: var(--bg-panel) !important;
-      border-right: 1px solid var(--border-color) !important;
+      border-right: 1px solid var(--border) !important;
     }
-    
-    /* 侧边栏链接 */
     [class*="SidebarNavLink"] {
-      color: #888 !important;
+      color: #666 !important;
       font-family: 'Orbitron', sans-serif !important;
-      font-size: 14px !important;
-      padding: 12px 20px !important;
-      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
-    
-    [class*="SidebarNavLink"]:hover,
     [class*="SidebarNavLink"].sidebar-active {
       color: var(--neon-blue) !important;
-      background: linear-gradient(90deg, rgba(0,243,255,0.1) 0%, transparent 100%) !important;
+      background: linear-gradient(90deg, rgba(0,243,255,0.1), transparent) !important;
       border-left: 3px solid var(--neon-blue) !important;
-      text-shadow: 0 0 10px rgba(0,243,255,0.5);
     }
 
-    /* --- 内容列表页 (Collection) --- */
-    /* 顶部工具栏 */
-    [class*="CollectionTop"] {
-      background-color: var(--bg-dark) !important;
+    /* 卡片列表 (Collection) */
+    [class*="CollectionTop"] { background-color: var(--bg-dark) !important; }
+    
+    [class*="Card"] {
+      background-color: #080808 !important;
+      border: 1px solid #222 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      margin-bottom: 10px !important;
+    }
+    [class*="Card"]:hover {
+      border-color: var(--neon-red) !important;
+    }
+    [class*="Card-cardTop"] { color: #fff !important; font-weight: bold; }
+
+    /* 编辑器输入框 */
+    [class*="EditorContainer"] { background-color: var(--bg-dark) !important; }
+    [class*="EditorToolbar"] { 
+      background-color: #000 !important; 
+      border-bottom: 1px solid #333 !important;
     }
 
-    /* 搜索框 */
-    [class*="SearchInput"] {
-      background-color: #1a1a1a !important;
+    label {
+      color: var(--neon-blue) !important;
+      font-family: 'Orbitron', sans-serif !important;
+      font-size: 11px !important;
+      margin-top: 15px !important;
+    }
+
+    input[type="text"], textarea, [class*="Select-control"] {
+      background-color: #111 !important;
       border: 1px solid #333 !important;
-      color: white !important;
-      border-radius: 4px !important;
+      color: #fff !important;
+      padding: 15px !important; /* 增大触控区 */
+      border-radius: 0 !important;
+      font-size: 16px !important; /* iOS 防缩放标准 */
     }
-    [class*="SearchInput"]:focus {
+    input:focus, textarea:focus {
       border-color: var(--neon-blue) !important;
       box-shadow: 0 0 10px rgba(0,243,255,0.2) !important;
     }
 
-    /* 列表卡片 */
-    [class*="Card"] {
-      background-color: #111 !important;
-      border: 1px solid #333 !important;
-      border-radius: 8px !important;
-      transition: all 0.3s ease !important;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
-    }
-    
-    [class*="Card"]:hover {
-      transform: translateY(-2px);
-      border-color: var(--neon-red) !important;
-      box-shadow: 0 0 15px rgba(255, 0, 85, 0.2) !important;
-    }
-
-    [class*="Card-cardTop"] {
-      color: white !important;
-      font-weight: bold;
-    }
-
-    /* --- 编辑器页面 (Editor) --- */
-    [class*="EditorContainer"] {
-      background-color: var(--bg-dark) !important;
-    }
-    
-    /* 顶部发布栏 */
-    [class*="EditorToolbar"] {
-      background-color: var(--bg-panel) !important;
-      border-bottom: 1px solid var(--border-color) !important;
-    }
-
-    /* 所有的输入框 Label */
-    label {
-      color: var(--neon-blue) !important;
-      font-family: 'Orbitron', sans-serif !important;
-      font-size: 12px !important;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 8px !important;
-    }
-
-    /* 输入框本体 */
-    input[type="text"], textarea, [class*="Select-control"] {
-      background-color: #151515 !important;
-      border: 1px solid #333 !important;
-      color: white !important;
-      padding: 12px !important;
-      font-family: 'Rajdhani', sans-serif !important;
-      font-size: 16px !important; /* 防止 iOS 缩放 */
-      border-radius: 4px !important;
-    }
-    
-    input:focus, textarea:focus {
-      border-color: var(--neon-blue) !important;
-      outline: none !important;
-      box-shadow: 0 0 10px rgba(0,243,255,0.1) !important;
-    }
-
-    /* 图片上传控件 */
+    /* 图片上传按钮 */
     [class*="FileWidgetButton"] {
-      background-color: #222 !important;
-      color: white !important;
-      border: 1px dashed #555 !important;
-    }
-    [class*="FileWidgetButton"]:hover {
-      border-color: var(--neon-blue) !important;
-      color: var(--neon-blue) !important;
+      background-color: #111 !important;
+      color: #888 !important;
+      border: 1px dashed #444 !important;
+      padding: 20px !important;
     }
 
-    /* --- 按钮 (Buttons) --- */
-    /* 主要动作按钮 (Publish) */
-    button[class*="Button"] {
-      font-family: 'Orbitron', sans-serif !important;
-      font-weight: bold !important;
+    /* 按钮样式 */
+    button {
       text-transform: uppercase;
-      border-radius: 2px !important;
+      font-family: 'Orbitron', sans-serif !important;
       letter-spacing: 1px;
+      border-radius: 0 !important;
     }
-
-    /* 绿色按钮 (通常是发布) 改为 霓虹红 */
+    /* 发布按钮 */
     button[class*="Button-success"] {
       background-color: var(--neon-red) !important;
-      color: white !important;
-      box-shadow: 0 0 10px rgba(255, 0, 85, 0.4) !important;
+      color: #fff !important;
+      box-shadow: 0 0 15px rgba(255,0,85,0.4);
     }
 
-    /* 灰色按钮 改为 深灰 */
-    button[class*="Button-gray"] {
-      background-color: #333 !important;
-      color: white !important;
-    }
-
-    /* --- 移动端优化 --- */
+    /* =========================================
+       移动端专属适配 (Max-width: 768px)
+       ========================================= */
     @media (max-width: 768px) {
-      /* 增大顶部栏高度以适应手指点击 */
-      [class*="AppHeader-header"] {
-        height: 70px !important;
+      
+      /* 1. 布局调整：让主容器填满屏幕 */
+      body, #nc-root { overflow-x: hidden; }
+      
+      /* 2. 隐藏移动端不需要的元素 */
+      [class*="AppHeader-breadcrumb"], /* 顶部面包屑 */
+      [class*="AppHeader-actions"],    /* 顶部 Quick Add */
+      [class*="SidebarFooter"],        /* 侧边栏底部 */
+      [class*="CollectionTop-viewControls"] /* 列表视图切换 */
+      {
+        display: none !important;
+      }
+
+      /* 3. 顶部导航栏简化 */
+      [class*="AppHeader-content"] {
+        padding: 0 10px !important;
+        justify-content: space-between !important;
+      }
+      /* 汉堡菜单按钮增大 */
+      button[class*="AppHeader-menuButton"] {
+        width: 44px;
+        height: 44px;
+        color: white !important;
+      }
+
+      /* 4. 列表页面优化 */
+      [class*="CollectionContainer"] {
+        padding: 10px !important;
+      }
+      [class*="Card"] {
+        width: 100% !important;
+        margin: 0 0 15px 0 !important;
+      }
+
+      /* 5. 编辑页面优化 */
+      [class*="EditorContent"] {
+        padding: 10px !important;
+        display: flex;
+        flex-direction: column;
       }
       
-      /* 编辑器和预览切换按钮 */
+      /* 6. 发布栏固定在底部? 不，放在顶部更安全，但要防止遮挡 */
+      [class*="EditorToolbar"] {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        padding: 10px !important;
+        flex-wrap: wrap;
+      }
+
+      /* 7. 预览切换开关 (Editor / Preview) */
       [class*="EditorToggle"] {
-        background-color: #1a1a1a !important;
-        color: #888 !important;
-        border: 1px solid #333 !important;
+        width: 100%;
+        margin-top: 10px;
+        background: #111;
+        border: 1px solid #333;
+        color: #888;
       }
       [class*="EditorToggle-active"] {
-        background-color: var(--neon-blue) !important;
-        color: black !important;
+        background: var(--neon-blue);
+        color: #000;
         font-weight: bold;
       }
 
-      /* 隐藏掉一些不重要的元数据以节省空间 */
-      [class*="EditorToolbar-metadata"] {
-        display: none !important;
+      /* 8. 修复弹窗/下拉菜单被遮挡的问题 */
+      [class*="Dropdown-content"] {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 90% !important;
+        max-height: 80vh !important;
+        background: #111 !important;
+        border: 1px solid var(--neon-blue) !important;
+        z-index: 9999 !important;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Decap CMS 脚本 -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   
   <script>
-    // --- 定义 "Prompts" 的实时预览组件 ---
+    // --- 定义移动端优先的预览组件 ---
     var PromptsPreview = createClass({
       render: function() {
         var entry = this.props.entry;
-        
-        // 获取输入值，如果没有值则显示占位符
-        var image = entry.getIn(['data', 'image']) || '';
-        var title = entry.getIn(['data', 'title']) || 'UNTITLED PROJECT';
+        var image = entry.getIn(['data', 'image']);
+        var title = entry.getIn(['data', 'title']) || 'UNTITLED';
         var tool = entry.getIn(['data', 'tool']) || 'AI Tool';
-        var prompt = entry.getIn(['data', 'prompt']) || 'Enter your prompt...';
+        var prompt = entry.getIn(['data', 'prompt']) || 'No prompt content...';
         
-        // 渲染预览 HTML (使用 React.createElement 的简写 h)
-        // 外层容器模拟手机屏幕宽度，让预览更真实
-        return h('div', {className: 'flex flex-col items-center justify-start min-h-screen bg-black p-4'},
+        // 使用 h (React.createElement)
+        return h('div', {className: 'w-full bg-black min-h-screen text-white p-4 font-sans'},
           
-          h('div', {className: 'text-gray-500 text-xs mb-4 font-mono uppercase tracking-widest'}, '/// MOBILE PREVIEW MODE'),
+          // 标题栏模拟
+          h('div', {className: 'text-xs font-bold text-gray-500 mb-4 tracking-widest border-b border-gray-800 pb-2'}, 'PREVIEW // MOBILE MODE'),
 
-          // 模拟卡片容器
-          h('div', {className: 'relative group overflow-hidden border border-gray-800 bg-gray-900 w-full max-w-sm aspect-[3/4] shadow-[0_0_20px_rgba(0,243,255,0.1)] rounded-sm'},
-            // 图片层
-            image ? h('img', {
-              src: image,
-              className: 'w-full h-full object-cover'
-            }) : h('div', {className: 'w-full h-full flex items-center justify-center bg-gray-900 text-gray-700'}, 'NO IMAGE'),
-            
-            // 底部文字信息层 (模拟 hover 效果，这里默认显示出来方便查看)
-            h('div', {className: 'absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black via-black/80 to-transparent'},
-              h('span', {className: 'inline-block px-2 py-0.5 bg-pink-600 text-white text-[10px] font-bold tracking-wider mb-1'}, tool),
-              h('h3', {className: 'text-white font-mono text-xl truncate font-bold'}, title)
-            )
+          // 卡片主体
+          h('div', {className: 'relative w-full aspect-[3/4] bg-gray-900 border border-gray-800 rounded mb-6 overflow-hidden'},
+             image ? h('img', {src: image, className: 'w-full h-full object-cover'}) : h('div', {className: 'flex items-center justify-center h-full text-gray-600 text-xs'}, 'NO IMAGE UPLOADED'),
+             
+             // 渐变遮罩
+             h('div', {className: 'absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90'}),
+             
+             // 底部文字
+             h('div', {className: 'absolute bottom-4 left-4 right-4'},
+               h('span', {className: 'inline-block px-2 py-1 bg-pink-600 text-white text-[10px] font-bold mb-2'}, tool),
+               h('h1', {className: 'text-xl font-bold font-mono text-white truncate'}, title)
+             )
           ),
 
-          // 下方显示 Prompt 文本 (方便检查)
-          h('div', {className: 'w-full max-w-sm mt-6 p-4 border border-cyan-500/30 bg-gray-900/50 rounded'},
-            h('label', {className: 'text-pink-500 text-xs font-bold tracking-widest uppercase block mb-2'}, 'Prompt Data'),
-            h('p', {className: 'text-gray-300 font-mono text-xs leading-relaxed break-words'}, prompt)
+          // Prompt 文字区
+          h('div', {className: 'space-y-2'},
+            h('h3', {className: 'text-cyan-400 text-xs font-bold uppercase tracking-widest'}, 'Prompt Command'),
+            h('div', {className: 'p-4 bg-gray-900 border border-gray-800 text-gray-400 text-xs font-mono leading-relaxed break-all'}, prompt)
           )
         );
       }
     });
 
-    // 注册预览模板
     CMS.registerPreviewTemplate("prompts", PromptsPreview);
     
-    // 注册 Tailwind 样式到 iframe 中，保证预览样式正确
+    // 注入样式到预览 iframe
     CMS.registerPreviewStyle("https://cdn.tailwindcss.com");
-    // 注册 Google Fonts 到 iframe 中
-    CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap");
-
-    // 配置：自动初始化 (假设你之前已经在 GitHub 修改了 config.yml)
-    // 如果你之前使用了手动初始化的脚本，请把那个脚本块保留，或者只复制上面的 style 和 script 部分
+    // 强制预览 iframe 的背景为黑色
+    CMS.registerPreviewStyle("body { background-color: #000 !important; }");
   </script>
 </body>
 </html>
+
+
