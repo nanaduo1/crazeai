@@ -8,11 +8,88 @@
       "prompt": "This is a demo prompt setup. You can delete this later via the CMS."
     },
     {
-      "id": "001",
+      "id": "002",
       "title": "测试",
       "image": "/images/uploads/generated-image-november-08-2025-1_58pm.png",
       "tool": "Gemini Pro",
       "prompt": "测试123"
+    },
+    {
+      "id": "003",
+      "tool": "Midjourney V6",
+      "title": "11",
+      "image": "/images/uploads/generated-image-november-08-2025-1_58pm.png",
+      "prompt": "11"
+    },
+    {
+      "id": "004",
+      "title": "11",
+      "image": "/images/uploads/generated-image-november-08-2025-1_58pm.png",
+      "tool": "DALL-E 3",
+      "prompt": "11"
+    },
+    {
+      "id": "005",
+      "title": "11",
+      "image": "/images/uploads/generated-image-november-08-2025-1_58pm.png",
+      "tool": "Gemini Pro",
+      "prompt": "11"
+    },
+    {
+      "id": "006",
+      "title": "11",
+      "image": "/images/uploads/generated-image-november-08-2025-1_58pm.png",
+      "tool": "Stable Diffusion XL",
+      "prompt": "11"
+    },
+    {
+      "id": "007",
+      "title": "11",
+      "image": "/images/uploads/generated-image-november-08-2025-1_58pm.png",
+      "tool": "Gemini Pro",
+      "prompt": "11"
+    },
+    {
+      "id": "008",
+      "title": "11",
+      "image": "/images/uploads/generated-image-november-08-2025-1_58pm.png",
+      "tool": "Midjourney V6",
+      "prompt": "11"
+    },
+    {
+      "id": "009",
+      "title": "11",
+      "image": "/images/uploads/generated-image-november-08-2025-1_58pm.png",
+      "tool": "Stable Diffusion XL",
+      "prompt": "11"
+    },
+    {
+      "id": "010",
+      "title": "11",
+      "image": "/images/uploads/generated-image-november-08-2025-1_58pm.png",
+      "tool": "Gemini Pro",
+      "prompt": "11"
+    },
+    {
+      "id": "011",
+      "title": "11",
+      "image": "/images/uploads/generated-image-november-08-2025-1_58pm.png",
+      "tool": "Gemini Pro",
+      "prompt": "11"
+    },
+    {
+      "id": "012",
+      "title": "11",
+      "image": "/images/uploads/generated-image-november-08-2025-1_58pm.png",
+      "tool": "Midjourney V6",
+      "prompt": "11"
+    },
+    {
+      "id": "013",
+      "title": "11",
+      "image": "/images/uploads/generated-image-november-08-2025-1_58pm.png",
+      "tool": "Midjourney V6",
+      "prompt": "11"
     }
   ]
 }
