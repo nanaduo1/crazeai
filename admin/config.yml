@@ -1,6 +1,7 @@
 backend:
   name: git-gateway
   branch: main # 确保这里是你的主要分支名称，通常是 main 或 master
+  site_domain: "comforting-arithmetic-31ca83.netlify.app"
 
 media_folder: "images/uploads" # 图片上传后保存的位置
 public_folder: "/images/uploads" # 网页引用图片的路径
