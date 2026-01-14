@@ -255,146 +255,162 @@
     </div>
 
     <script>
-        // Initialize Lucide Icons
-        lucide.createIcons();
+// Initialize Lucide Icons
+    lucide.createIcons();
 
-        // Mobile Menu Toggle
-        const btn = document.getElementById('mobile-menu-btn');
-        const menu = document.getElementById('mobile-nav');
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
+    // Mobile Menu Toggle
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-nav');
+    btn.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+    });
 
-        // --- DATA MOCKUP ---
-        // Generating 30 mock items to demonstrate pagination (12 per page)
-        const allPrompts = [];
-        const tools = ['Midjourney V6', 'Gemini Ultra', 'Stable Diffusion XL', 'DALL-E 3'];
-        const images = [
-            'https://nanaduo1.github.io/crazeai/images/part1/IMG_1612.jpeg',
-            'https://nanaduo1.github.io/crazeai/images/part1/IMG_1931.jpeg',
-            'https://nanaduo1.github.io/crazeai/images/part2/IMG_2176.jpeg',
-            'https://nanaduo1.github.io/crazeai/images/part4/IMG_1902.jpeg',
-            'https://nanaduo1.github.io/crazeai/images/part5/IMG_0974.jpeg',
-            'https://nanaduo1.github.io/crazeai/images/part2/IMG_1999.jpeg'
-        ];
+    // --- GLOBAL VARIABLES ---
+    let allPrompts = [];
+    const ITEMS_PER_PAGE = 12;
+    let currentPage = 1;
 
-        for (let i = 1; i <= 30; i++) {
-            allPrompts.push({
-                id: i,
-                title: `PROJECT_ARCHIVE_${String(i).padStart(3, '0')}`,
-                image: images[i % images.length],
-                tool: tools[i % tools.length],
-                prompt: `Hyper-realistic portrait, cyberpunk aesthetics, neon lighting, cinematic composition, 8k resolution, highly detailed texture, volumetric fog, octane render --ar 3:4 --v 6.0`
-            });
-        }
-
-        // --- PAGINATION LOGIC ---
-        const ITEMS_PER_PAGE = 12;
-        let currentPage = 1;
-        const totalPages = Math.ceil(allPrompts.length / ITEMS_PER_PAGE);
-
-        function renderGrid(page) {
-            const grid = document.getElementById('prompts-grid');
-            grid.innerHTML = '';
+    // --- FETCH DATA FROM CMS JSON ---
+    async function fetchPrompts() {
+        try {
+            // 这里读取我们刚才创建的 prompts.json 文件
+            // 添加时间戳防止浏览器缓存旧数据
+            const response = await fetch('prompts.json?v=' + new Date().getTime());
+            const data = await response.json();
             
-            const start = (page - 1) * ITEMS_PER_PAGE;
-            const end = start + ITEMS_PER_PAGE;
-            const items = allPrompts.slice(start, end);
-
-            items.forEach(item => {
-                // Card HTML Structure
-                // Requirement: Aspect Ratio 3:4 for thumbnail
-                const card = document.createElement('div');
-                card.className = 'prompt-card bg-gray-900 group cursor-pointer aspect-[3/4] relative';
-                card.onclick = () => openModal(item);
-                
-                card.innerHTML = `
-                    <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover">
-                    <div class="absolute bottom-0 left-0 w-full p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-10">
-                        <span class="inline-block px-2 py-0.5 bg-pink-600 text-white text-[10px] font-bold tracking-wider mb-1">${item.tool}</span>
-                        <h3 class="text-white font-mono text-sm truncate">${item.title}</h3>
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-                `;
-                grid.appendChild(card);
-            });
-
-            // Update Buttons
-            document.getElementById('page-indicator').innerText = `PAGE ${currentPage} / ${totalPages}`;
-            document.getElementById('prev-btn').disabled = currentPage === 1;
-            document.getElementById('next-btn').disabled = currentPage === totalPages;
-            
-            // Scroll to top of grid
-            if(page !== 1) {
-                document.getElementById('prompts-grid').scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        function changePage(direction) {
-            const newPage = currentPage + direction;
-            if (newPage >= 1 && newPage <= totalPages) {
-                currentPage = newPage;
+            // Decap CMS 保存的数据结构在 data.items 里
+            // 我们使用 reverse() 让最新上传的显示在最前面
+            if (data.items && Array.isArray(data.items)) {
+                allPrompts = data.items.reverse(); 
                 renderGrid(currentPage);
+            } else {
+                console.error("No items found in JSON");
             }
+        } catch (error) {
+            console.error("Error loading prompts:", error);
+            // 这里可以添加一个错误提示给用户
+            document.getElementById('prompts-grid').innerHTML = '<p class="text-white text-center col-span-3">Loading Failed. Please refresh.</p>';
+        }
+    }
+
+    // --- PAGINATION LOGIC ---
+    function renderGrid(page) {
+        const grid = document.getElementById('prompts-grid');
+        grid.innerHTML = '';
+        
+        const totalPages = Math.ceil(allPrompts.length / ITEMS_PER_PAGE);
+        const start = (page - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+        const items = allPrompts.slice(start, end);
+
+        if (items.length === 0) {
+            grid.innerHTML = '<p class="text-gray-500 text-center col-span-2 md:col-span-3">No prompts added yet.</p>';
+            return;
         }
 
-        // Initial Render
-        renderGrid(currentPage);
-
-        // --- MODAL LOGIC ---
-        const modal = document.getElementById('promptModal');
-        const modalImg = document.getElementById('modalImage');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalTool = document.getElementById('modalTool');
-        const modalPrompt = document.getElementById('modalPrompt');
-
-        function openModal(item) {
-            modalImg.src = item.image;
-            modalTitle.innerText = item.title;
-            modalTool.innerText = item.tool;
-            modalPrompt.innerText = item.prompt;
+        items.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'prompt-card bg-gray-900 group cursor-pointer aspect-[3/4] relative';
+            card.onclick = () => openModal(item);
             
-            modal.classList.remove('hidden');
-            // Small timeout for fade-in effect
-            setTimeout(() => {
-                modal.querySelector('div.relative').classList.add('scale-100');
-                modal.querySelector('div.relative').classList.remove('scale-95');
-            }, 10);
-        }
+            // 处理图片路径：如果是 CMS 上传的，通常是相对路径；如果是外部链接，直接使用
+            const imgSrc = item.image; 
 
-        function closeModal() {
-            modal.classList.add('hidden');
-        }
-
-        // Close on Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
+            card.innerHTML = `
+                <img src="${imgSrc}" alt="${item.title}" class="w-full h-full object-cover">
+                <div class="absolute bottom-0 left-0 w-full p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-10">
+                    <span class="inline-block px-2 py-0.5 bg-pink-600 text-white text-[10px] font-bold tracking-wider mb-1">${item.tool}</span>
+                    <h3 class="text-white font-mono text-sm truncate">${item.title}</h3>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+            `;
+            grid.appendChild(card);
         });
 
-        // --- COPY FUNCTIONALITY ---
-        function copyPrompt() {
-            const text = document.getElementById('modalPrompt').innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                showToast();
-            }).catch(err => {
-                // Fallback for some browsers
-                const textArea = document.createElement("textarea");
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand("copy");
-                document.body.removeChild(textArea);
-                showToast();
-            });
+        updatePaginationControls(totalPages);
+        
+        if(page !== 1) {
+            document.getElementById('prompts-grid').scrollIntoView({ behavior: 'smooth' });
         }
+    }
 
-        function showToast() {
-            const toast = document.getElementById('toast');
-            toast.classList.remove('opacity-0', 'translate-y-10');
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-10');
-            }, 2000);
+    function updatePaginationControls(totalPages) {
+        const indicator = document.getElementById('page-indicator');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        if (totalPages === 0) totalPages = 1;
+
+        indicator.innerText = `PAGE ${currentPage} / ${totalPages}`;
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+    }
+
+    function changePage(direction) {
+        const totalPages = Math.ceil(allPrompts.length / ITEMS_PER_PAGE);
+        const newPage = currentPage + direction;
+        if (newPage >= 1 && newPage <= totalPages) {
+            currentPage = newPage;
+            renderGrid(currentPage);
         }
+    }
+
+    // --- MODAL LOGIC (保持不变) ---
+    const modal = document.getElementById('promptModal');
+    const modalImg = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalTool = document.getElementById('modalTool');
+    const modalPrompt = document.getElementById('modalPrompt');
+
+    function openModal(item) {
+        modalImg.src = item.image;
+        modalTitle.innerText = item.title;
+        modalTool.innerText = item.tool;
+        modalPrompt.innerText = item.prompt;
+        
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modal.querySelector('div.relative').classList.add('scale-100');
+            modal.querySelector('div.relative').classList.remove('scale-95');
+        }, 10);
+    }
+
+    function closeModal() {
+        modal.classList.add('hidden');
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    // --- COPY FUNCTIONALITY (保持不变) ---
+    function copyPrompt() {
+        const text = document.getElementById('modalPrompt').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            showToast();
+        }).catch(err => {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+            showToast();
+        });
+    }
+
+    function showToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.remove('opacity-0', 'translate-y-10');
+        setTimeout(() => {
+            toast.classList.add('opacity-0', 'translate-y-10');
+        }, 2000);
+    }
+
+    // --- START APP ---
+    // 页面加载时获取数据
+    fetchPrompts();
     </script>
 </body>
+
 </html>
