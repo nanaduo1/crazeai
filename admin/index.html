@@ -2,13 +2,276 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Content Manager</title>
-  <!-- 引入 Netlify Identity Widget 用于登录 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CRAZE.AI | SYSTEM ADMIN</title>
+  
+  <!-- 1. 字体 & 图标 (与前台保持一致) -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+  
+  <!-- 2. Tailwind CSS (用于预览组件) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- 3. Netlify Identity -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <!-- 4. 深度定制 CSS -->
+  <style>
+    :root {
+      --neon-blue: #00f3ff;
+      --neon-red: #ff0055;
+      --bg-dark: #050505;
+      --bg-panel: #0a0a0a;
+      --text-main: #e2e8f0;
+      --border-color: #333;
+    }
+
+    /* --- 全局重置 --- */
+    body {
+      font-family: 'Rajdhani', sans-serif !important;
+      background-color: var(--bg-dark) !important;
+      color: var(--text-main) !important;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Orbitron', sans-serif !important;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    /* --- 顶部导航栏 (App Header) --- */
+    [class*="AppHeader-header"] {
+      background-color: rgba(5, 5, 5, 0.95) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+      backdrop-filter: blur(10px);
+      height: 60px !important;
+    }
+
+    /* 面包屑导航文字 */
+    [class*="AppHeader-breadcrumb"] {
+      color: var(--neon-blue) !important;
+      font-weight: bold;
+    }
+
+    /* 汉堡菜单 (移动端) */
+    button[class*="AppHeader-menuButton"] {
+      color: white !important;
+    }
+
+    /* --- 侧边栏 (Sidebar) --- */
+    [class*="SidebarContainer"] {
+      background-color: var(--bg-panel) !important;
+      border-right: 1px solid var(--border-color) !important;
+    }
+    
+    /* 侧边栏链接 */
+    [class*="SidebarNavLink"] {
+      color: #888 !important;
+      font-family: 'Orbitron', sans-serif !important;
+      font-size: 14px !important;
+      padding: 12px 20px !important;
+      transition: all 0.3s ease;
+    }
+    
+    [class*="SidebarNavLink"]:hover,
+    [class*="SidebarNavLink"].sidebar-active {
+      color: var(--neon-blue) !important;
+      background: linear-gradient(90deg, rgba(0,243,255,0.1) 0%, transparent 100%) !important;
+      border-left: 3px solid var(--neon-blue) !important;
+      text-shadow: 0 0 10px rgba(0,243,255,0.5);
+    }
+
+    /* --- 内容列表页 (Collection) --- */
+    /* 顶部工具栏 */
+    [class*="CollectionTop"] {
+      background-color: var(--bg-dark) !important;
+    }
+
+    /* 搜索框 */
+    [class*="SearchInput"] {
+      background-color: #1a1a1a !important;
+      border: 1px solid #333 !important;
+      color: white !important;
+      border-radius: 4px !important;
+    }
+    [class*="SearchInput"]:focus {
+      border-color: var(--neon-blue) !important;
+      box-shadow: 0 0 10px rgba(0,243,255,0.2) !important;
+    }
+
+    /* 列表卡片 */
+    [class*="Card"] {
+      background-color: #111 !important;
+      border: 1px solid #333 !important;
+      border-radius: 8px !important;
+      transition: all 0.3s ease !important;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
+    }
+    
+    [class*="Card"]:hover {
+      transform: translateY(-2px);
+      border-color: var(--neon-red) !important;
+      box-shadow: 0 0 15px rgba(255, 0, 85, 0.2) !important;
+    }
+
+    [class*="Card-cardTop"] {
+      color: white !important;
+      font-weight: bold;
+    }
+
+    /* --- 编辑器页面 (Editor) --- */
+    [class*="EditorContainer"] {
+      background-color: var(--bg-dark) !important;
+    }
+    
+    /* 顶部发布栏 */
+    [class*="EditorToolbar"] {
+      background-color: var(--bg-panel) !important;
+      border-bottom: 1px solid var(--border-color) !important;
+    }
+
+    /* 所有的输入框 Label */
+    label {
+      color: var(--neon-blue) !important;
+      font-family: 'Orbitron', sans-serif !important;
+      font-size: 12px !important;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px !important;
+    }
+
+    /* 输入框本体 */
+    input[type="text"], textarea, [class*="Select-control"] {
+      background-color: #151515 !important;
+      border: 1px solid #333 !important;
+      color: white !important;
+      padding: 12px !important;
+      font-family: 'Rajdhani', sans-serif !important;
+      font-size: 16px !important; /* 防止 iOS 缩放 */
+      border-radius: 4px !important;
+    }
+    
+    input:focus, textarea:focus {
+      border-color: var(--neon-blue) !important;
+      outline: none !important;
+      box-shadow: 0 0 10px rgba(0,243,255,0.1) !important;
+    }
+
+    /* 图片上传控件 */
+    [class*="FileWidgetButton"] {
+      background-color: #222 !important;
+      color: white !important;
+      border: 1px dashed #555 !important;
+    }
+    [class*="FileWidgetButton"]:hover {
+      border-color: var(--neon-blue) !important;
+      color: var(--neon-blue) !important;
+    }
+
+    /* --- 按钮 (Buttons) --- */
+    /* 主要动作按钮 (Publish) */
+    button[class*="Button"] {
+      font-family: 'Orbitron', sans-serif !important;
+      font-weight: bold !important;
+      text-transform: uppercase;
+      border-radius: 2px !important;
+      letter-spacing: 1px;
+    }
+
+    /* 绿色按钮 (通常是发布) 改为 霓虹红 */
+    button[class*="Button-success"] {
+      background-color: var(--neon-red) !important;
+      color: white !important;
+      box-shadow: 0 0 10px rgba(255, 0, 85, 0.4) !important;
+    }
+
+    /* 灰色按钮 改为 深灰 */
+    button[class*="Button-gray"] {
+      background-color: #333 !important;
+      color: white !important;
+    }
+
+    /* --- 移动端优化 --- */
+    @media (max-width: 768px) {
+      /* 增大顶部栏高度以适应手指点击 */
+      [class*="AppHeader-header"] {
+        height: 70px !important;
+      }
+      
+      /* 编辑器和预览切换按钮 */
+      [class*="EditorToggle"] {
+        background-color: #1a1a1a !important;
+        color: #888 !important;
+        border: 1px solid #333 !important;
+      }
+      [class*="EditorToggle-active"] {
+        background-color: var(--neon-blue) !important;
+        color: black !important;
+        font-weight: bold;
+      }
+
+      /* 隐藏掉一些不重要的元数据以节省空间 */
+      [class*="EditorToolbar-metadata"] {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- 引入 Decap CMS 脚本 -->
+  <!-- Decap CMS 脚本 -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <script>
+    // --- 定义 "Prompts" 的实时预览组件 ---
+    var PromptsPreview = createClass({
+      render: function() {
+        var entry = this.props.entry;
+        
+        // 获取输入值，如果没有值则显示占位符
+        var image = entry.getIn(['data', 'image']) || '';
+        var title = entry.getIn(['data', 'title']) || 'UNTITLED PROJECT';
+        var tool = entry.getIn(['data', 'tool']) || 'AI Tool';
+        var prompt = entry.getIn(['data', 'prompt']) || 'Enter your prompt...';
+        
+        // 渲染预览 HTML (使用 React.createElement 的简写 h)
+        // 外层容器模拟手机屏幕宽度，让预览更真实
+        return h('div', {className: 'flex flex-col items-center justify-start min-h-screen bg-black p-4'},
+          
+          h('div', {className: 'text-gray-500 text-xs mb-4 font-mono uppercase tracking-widest'}, '/// MOBILE PREVIEW MODE'),
+
+          // 模拟卡片容器
+          h('div', {className: 'relative group overflow-hidden border border-gray-800 bg-gray-900 w-full max-w-sm aspect-[3/4] shadow-[0_0_20px_rgba(0,243,255,0.1)] rounded-sm'},
+            // 图片层
+            image ? h('img', {
+              src: image,
+              className: 'w-full h-full object-cover'
+            }) : h('div', {className: 'w-full h-full flex items-center justify-center bg-gray-900 text-gray-700'}, 'NO IMAGE'),
+            
+            // 底部文字信息层 (模拟 hover 效果，这里默认显示出来方便查看)
+            h('div', {className: 'absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black via-black/80 to-transparent'},
+              h('span', {className: 'inline-block px-2 py-0.5 bg-pink-600 text-white text-[10px] font-bold tracking-wider mb-1'}, tool),
+              h('h3', {className: 'text-white font-mono text-xl truncate font-bold'}, title)
+            )
+          ),
+
+          // 下方显示 Prompt 文本 (方便检查)
+          h('div', {className: 'w-full max-w-sm mt-6 p-4 border border-cyan-500/30 bg-gray-900/50 rounded'},
+            h('label', {className: 'text-pink-500 text-xs font-bold tracking-widest uppercase block mb-2'}, 'Prompt Data'),
+            h('p', {className: 'text-gray-300 font-mono text-xs leading-relaxed break-words'}, prompt)
+          )
+        );
+      }
+    });
+
+    // 注册预览模板
+    CMS.registerPreviewTemplate("prompts", PromptsPreview);
+    
+    // 注册 Tailwind 样式到 iframe 中，保证预览样式正确
+    CMS.registerPreviewStyle("https://cdn.tailwindcss.com");
+    // 注册 Google Fonts 到 iframe 中
+    CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap");
+
+    // 配置：自动初始化 (假设你之前已经在 GitHub 修改了 config.yml)
+    // 如果你之前使用了手动初始化的脚本，请把那个脚本块保留，或者只复制上面的 style 和 script 部分
+  </script>
 </body>
 </html>
