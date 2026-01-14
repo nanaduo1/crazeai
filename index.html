@@ -126,7 +126,7 @@
         .modern-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .modern-card:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px var(--neon-blue); /* Changed to Blue for contrast */
+            box-shadow: 0 0 20px var(--neon-blue);
             border-color: var(--neon-blue);
             z-index: 10;
         }
@@ -150,6 +150,11 @@
         .play-overlay { opacity: 0; transition: opacity 0.3s ease; }
         .video-card:hover .play-overlay { opacity: 1; }
         .video-card:hover img { transform: scale(1.02); transition: transform 0.5s ease; }
+
+        /* --- MOBILE INTERACTION FIX FOR CINEMATIC SECTION --- */
+        /* Applied when class 'active-tap' is added via JS */
+        .group.active-tap img { transform: scale(1.1); }
+        .group.active-tap .overlay-content { opacity: 1; }
 
         .nav-link { position: relative; }
         .nav-link::after {
@@ -241,7 +246,9 @@
         </div>
     </section>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-20 space-y-32 relative z-10">
+    <!-- Main Content -->
+    <!-- Optimization: Reduced space-y-32 to space-y-16 for mobile to reduce gaps -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-20 space-y-16 md:space-y-32 relative z-10">
 
         <!-- 01 MODERN PORTRAITS -->
         <section id="section-modern">
@@ -255,7 +262,8 @@
                 </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Optimization: grid-cols-2 for mobile, gap-3 for mobile -->
+            <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                 <div class="modern-card group border border-gray-800 bg-gray-900 overflow-hidden relative aspect-[3/4]">
                     <img src="https://nanaduo1.github.io/crazeai/images/part1/IMG_1612.jpeg" alt="Modern Portrait" class="w-full h-full object-cover">
                     <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -302,7 +310,8 @@
                 <p class="text-gray-400 font-light">Historical grandeur brought to life. Hover to restore color.</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
+            <!-- Optimization: grid-cols-2 for mobile -->
+            <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1">
                 <div class="ancient-card overflow-hidden aspect-square bg-black">
                     <img src="https://nanaduo1.github.io/crazeai/images/part2/IMG_2176.jpeg" alt="Ancient" class="w-full h-full object-cover">
                 </div>
@@ -332,32 +341,40 @@
                 <div class="h-[1px] w-full bg-gradient-to-l from-transparent to-gray-700"></div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="relative group overflow-hidden rounded-lg shadow-2xl aspect-video border border-gray-800">
+            <!-- Optimization: grid-cols-2 for mobile, responsive font sizes, tap interaction -->
+            <div class="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-8">
+                <!-- Added onclick toggle function for mobile touch interaction -->
+                <!-- Optimization: aspect-[3/4] for mobile, md:aspect-video for PC -->
+                <div class="relative group overflow-hidden rounded-lg shadow-2xl aspect-[3/4] md:aspect-video border border-gray-800 cinematic-card" onclick="toggleCinematic(this)">
                     <img src="https://nanaduo1.github.io/crazeai/images/part4/IMG_1902.jpeg" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
-                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                        <h3 class="text-2xl font-bold text-white tracking-widest border-2 border-white px-4 py-2">NEO-NOIR</h3>
+                    <div class="overlay-content absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                        <!-- Responsive text size -->
+                        <h3 class="text-xs md:text-2xl font-bold text-white tracking-widest border border-white px-2 py-1 md:px-4 md:py-2 md:border-2">NEO-NOIR</h3>
                     </div>
                 </div>
-                <div class="relative group overflow-hidden rounded-lg shadow-2xl aspect-video border border-gray-800">
+                
+                <div class="relative group overflow-hidden rounded-lg shadow-2xl aspect-[3/4] md:aspect-video border border-gray-800 cinematic-card" onclick="toggleCinematic(this)">
                     <img src="https://nanaduo1.github.io/crazeai/images/part4/IMG_1105.jpeg" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
-                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                        <h3 class="text-2xl font-bold text-white tracking-widest border-2 border-white px-4 py-2">THE WASTELAND</h3>
+                    <div class="overlay-content absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                        <h3 class="text-xs md:text-2xl font-bold text-white tracking-widest border border-white px-2 py-1 md:px-4 md:py-2 md:border-2">THE WASTELAND</h3>
                     </div>
                 </div>
-                <div class="relative group overflow-hidden rounded-lg shadow-2xl aspect-video border border-gray-800">
+                
+                <div class="relative group overflow-hidden rounded-lg shadow-2xl aspect-[3/4] md:aspect-video border border-gray-800 cinematic-card" onclick="toggleCinematic(this)">
                     <img src="https://nanaduo1.github.io/crazeai/images/part4/IMG_1971.jpeg" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
-                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                        <h3 class="text-2xl font-bold text-white tracking-widest border-2 border-white px-4 py-2">GOTHIC</h3>
+                    <div class="overlay-content absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                        <h3 class="text-xs md:text-2xl font-bold text-white tracking-widest border border-white px-2 py-1 md:px-4 md:py-2 md:border-2">GOTHIC</h3>
                     </div>
                 </div>
-                <div class="relative group overflow-hidden rounded-lg shadow-2xl aspect-video border border-gray-800">
+                
+                <div class="relative group overflow-hidden rounded-lg shadow-2xl aspect-[3/4] md:aspect-video border border-gray-800 cinematic-card" onclick="toggleCinematic(this)">
                     <img src="https://nanaduo1.github.io/crazeai/images/part4/IMG_2164.jpeg" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
-                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                        <h3 class="text-2xl font-bold text-white tracking-widest border-2 border-white px-4 py-2">RETRO FUTURE</h3>
+                    <div class="overlay-content absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                        <h3 class="text-xs md:text-2xl font-bold text-white tracking-widest border border-white px-2 py-1 md:px-4 md:py-2 md:border-2">RETRO FUTURE</h3>
                     </div>
                 </div>
             </div>
+            <p class="text-xs text-gray-500 text-center mt-2 md:hidden">Tap image to reveal details</p>
         </section>
 
         <!-- 04 VIRTUAL BEINGS -->
@@ -367,7 +384,8 @@
                 <p class="text-gray-400 font-light">Digital personas. Pure synthesis.</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Optimization: grid-cols-2 for mobile -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                 <div class="virtual-card aspect-[4/5] bg-gray-900 border border-gray-800">
                     <img src="https://nanaduo1.github.io/crazeai/images/part5/IMG_0974.jpeg" class="w-full h-full object-cover">
                 </div>
@@ -390,132 +408,119 @@
         </section>
 
        <!-- 05 MOTION INTELLIGENCE -->
-<section id="section-video" class="relative">
-    <div class="mb-12 border-b-2 border-pink-600 inline-block pb-2 pr-12">
-        <h2 class="text-4xl md:text-5xl font-bold mb-2 text-white"><span class="text-pink-500">05</span> // MOTION</h2>
-        <p class="text-gray-400 font-light">The next frame is predicted.</p>
-    </div>
+        <section id="section-video" class="relative">
+            <div class="mb-12 border-b-2 border-pink-600 inline-block pb-2 pr-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-2 text-white"><span class="text-pink-500">05</span> // MOTION</h2>
+                <p class="text-gray-400 font-light">The next frame is predicted.</p>
+            </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Video 1 -->
-        <div class="video-card relative aspect-video bg-gray-900 cursor-pointer overflow-hidden rounded border border-gray-800 group" onclick="openVideoModal(this)">
-            <video class="w-full h-full object-cover opacity-80 pointer-events-none" autoplay muted loop playsinline preload="auto">
-                <source src="https://github.com/nanaduo1/crazeai/blob/main/images/video/aHR0cHM6Ly9hc3NldHMuZ3Jvay5jb20vdXNlcnMvYWUyOWIwYjYtMDdhNS00MmY3LWFjN2EtNjljNWRkNTQxOGU5L2dlbmVyYXRlZC82YjY2MTQ0YS0wZThhLTRkZjYtYmIzMi1jMTExNGM0NjA4NTMvZ2VuZXJhdGVkX3ZpZGVvX2hkLm1wNA%3D%3D.mp4?raw=true" type="video/mp4">
-            </video>
-            <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] group-hover:bg-black/20 transition-all">
-                <div class="w-16 h-16 rounded-full border-2 border-white flex items-center justify-center pl-1 hover:bg-white hover:text-black transition-colors">
-                    <i data-lucide="play" class="w-8 h-8 fill-current"></i>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Video 1 -->
+                <div class="video-card relative aspect-video bg-gray-900 cursor-pointer overflow-hidden rounded border border-gray-800 group" onclick="openVideoModal(this)">
+                    <video class="w-full h-full object-cover opacity-80 pointer-events-none" autoplay muted loop playsinline preload="auto">
+                        <source src="https://github.com/nanaduo1/crazeai/blob/main/images/video/aHR0cHM6Ly9hc3NldHMuZ3Jvay5jb20vdXNlcnMvYWUyOWIwYjYtMDdhNS00MmY3LWFjN2EtNjljNWRkNTQxOGU5L2dlbmVyYXRlZC82YjY2MTQ0YS0wZThhLTRkZjYtYmIzMi1jMTExNGM0NjA4NTMvZ2VuZXJhdGVkX3ZpZGVvX2hkLm1wNA%3D%3D.mp4?raw=true" type="video/mp4">
+                    </video>
+                    <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] group-hover:bg-black/20 transition-all">
+                        <div class="w-16 h-16 rounded-full border-2 border-white flex items-center justify-center pl-1 hover:bg-white hover:text-black transition-colors">
+                            <i data-lucide="play" class="w-8 h-8 fill-current"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video 2 -->
+                <div class="video-card relative aspect-video bg-gray-900 cursor-pointer overflow-hidden rounded border border-gray-800 group" onclick="openVideoModal(this)">
+                    <video class="w-full h-full object-cover opacity-80 pointer-events-none" autoplay muted loop playsinline preload="auto">
+                        <source src="https://github.com/nanaduo1/crazeai/blob/main/images/video/aHR0cHM6Ly9hc3NldHMuZ3Jvay5jb20vdXNlcnMvYWUyOWIwYjYtMDdhNS00MmY3LWFjN2EtNjljNWRkNTQxOGU5L2dlbmVyYXRlZC84MjBkMzc1Yi0wYWU4LTQ0MTAtYjMzZi04ZTI4MTg2NzFmOTAvZ2VuZXJhdGVkX3ZpZGVvX2hkLm1wNA%3D%3D.mp4?raw=true" type="video/mp4">
+                    </video>
+                    <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] group-hover:bg-black/20 transition-all">
+                        <div class="w-16 h-16 rounded-full border-2 border-white flex items-center justify-center pl-1 hover:bg-white hover:text-black transition-colors">
+                            <i data-lucide="play" class="w-8 h-8 fill-current"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video 3 -->
+                <div class="video-card relative aspect-video bg-gray-900 cursor-pointer overflow-hidden rounded border border-gray-800 group" onclick="openVideoModal(this)">
+                    <video class="w-full h-full object-cover opacity-80 pointer-events-none" autoplay muted loop playsinline preload="auto">
+                        <source src="https://github.com/nanaduo1/crazeai/blob/main/images/video/aHR0cHM6Ly9hc3NldHMuZ3Jvay5jb20vdXNlcnMvYWUyOWIwYjYtMDdhNS00MmY3LWFjN2EtNjljNWRkNTQxOGU5L2dlbmVyYXRlZC8wZDQyZmM5MS04ZDE4LTQ2MzUtYWZlYy01YjliOWZjODU0YmQvZ2VuZXJhdGVkX3ZpZGVvX2hkLm1wNA%3D%3D.mp4?raw=true" type="video/mp4">
+                    </video>
+                    <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] group-hover:bg-black/20 transition-all">
+                        <div class="w-16 h-16 rounded-full border-2 border-white flex items-center justify-center pl-1 hover:bg-white hover:text-black transition-colors">
+                            <i data-lucide="play" class="w-8 h-8 fill-current"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video 4 -->
+                <div class="video-card relative aspect-video bg-gray-900 cursor-pointer overflow-hidden rounded border border-gray-800 group" onclick="openVideoModal(this)">
+                    <video class="w-full h-full object-cover opacity-80 pointer-events-none" autoplay muted loop playsinline preload="auto">
+                        <source src="https://github.com/nanaduo1/crazeai/blob/main/images/video/aHR0cHM6Ly9hc3NldHMuZ3Jvay5jb20vdXNlcnMvYWUyOWIwYjYtMDdhNS00MmY3LWFjN2EtNjljNWRkNTQxOGU5L2dlbmVyYXRlZC9iOWJjN2UxNy0wMzRiLTRhNmEtOGM5OC0wOTMxYjU0YzhiYTkvZ2VuZXJhdGVkX3ZpZGVvX2hkLm1wNA%3D%3D.mp4?raw=true" type="video/mp4">
+                    </video>
+                    <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] group-hover:bg-black/20 transition-all">
+                        <div class="w-16 h-16 rounded-full border-2 border-white flex items-center justify-center pl-1 hover:bg-white hover:text-black transition-colors">
+                            <i data-lucide="play" class="w-8 h-8 fill-current"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Video 2 -->
-        <div class="video-card relative aspect-video bg-gray-900 cursor-pointer overflow-hidden rounded border border-gray-800 group" onclick="openVideoModal(this)">
-            <video class="w-full h-full object-cover opacity-80 pointer-events-none" autoplay muted loop playsinline preload="auto">
-                <source src="https://github.com/nanaduo1/crazeai/blob/main/images/video/aHR0cHM6Ly9hc3NldHMuZ3Jvay5jb20vdXNlcnMvYWUyOWIwYjYtMDdhNS00MmY3LWFjN2EtNjljNWRkNTQxOGU5L2dlbmVyYXRlZC84MjBkMzc1Yi0wYWU4LTQ0MTAtYjMzZi04ZTI4MTg2NzFmOTAvZ2VuZXJhdGVkX3ZpZGVvX2hkLm1wNA%3D%3D.mp4?raw=true" type="video/mp4">
-            </video>
-            <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] group-hover:bg-black/20 transition-all">
-                <div class="w-16 h-16 rounded-full border-2 border-white flex items-center justify-center pl-1 hover:bg-white hover:text-black transition-colors">
-                    <i data-lucide="play" class="w-8 h-8 fill-current"></i>
+            <!-- Video Modal Overlay -->
+            <div id="videoModal" class="fixed inset-0 z-[100] hidden" role="dialog" aria-modal="true">
+                <div class="absolute inset-0 bg-black/90 backdrop-blur-md transition-opacity" onclick="closeVideoModal()"></div>
+                <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+                    <div class="relative w-full max-w-sm aspect-[9/16] bg-black rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10 pointer-events-auto transform transition-all duration-300">
+                        <button onclick="closeVideoModal()" class="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-white/20 text-white rounded-full backdrop-blur-sm transition-colors group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                        <video id="modalVideoPlayer" class="w-full h-full object-contain" controls playsinline>
+                            <source src="" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Video 3 -->
-        <div class="video-card relative aspect-video bg-gray-900 cursor-pointer overflow-hidden rounded border border-gray-800 group" onclick="openVideoModal(this)">
-            <video class="w-full h-full object-cover opacity-80 pointer-events-none" autoplay muted loop playsinline preload="auto">
-                <source src="https://github.com/nanaduo1/crazeai/blob/main/images/video/aHR0cHM6Ly9hc3NldHMuZ3Jvay5jb20vdXNlcnMvYWUyOWIwYjYtMDdhNS00MmY3LWFjN2EtNjljNWRkNTQxOGU5L2dlbmVyYXRlZC8wZDQyZmM5MS04ZDE4LTQ2MzUtYWZlYy01YjliOWZjODU0YmQvZ2VuZXJhdGVkX3ZpZGVvX2hkLm1wNA%3D%3D.mp4?raw=true" type="video/mp4">
-            </video>
-            <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] group-hover:bg-black/20 transition-all">
-                <div class="w-16 h-16 rounded-full border-2 border-white flex items-center justify-center pl-1 hover:bg-white hover:text-black transition-colors">
-                    <i data-lucide="play" class="w-8 h-8 fill-current"></i>
-                </div>
-            </div>
-        </div>
+            <script>
+                // Function to open the modal
+                function openVideoModal(element) {
+                    const modal = document.getElementById('videoModal');
+                    const modalVideo = document.getElementById('modalVideoPlayer');
+                    
+                    const sourceUrl = element.querySelector('source').src;
+                    
+                    if (sourceUrl) {
+                        modalVideo.src = sourceUrl;
+                        modal.classList.remove('hidden');
+                        setTimeout(() => {
+                            modalVideo.play().catch(e => console.log('Autoplay prevented:', e));
+                        }, 100);
+                    }
+                }
 
-        <!-- Video 4 -->
-        <div class="video-card relative aspect-video bg-gray-900 cursor-pointer overflow-hidden rounded border border-gray-800 group" onclick="openVideoModal(this)">
-            <video class="w-full h-full object-cover opacity-80 pointer-events-none" autoplay muted loop playsinline preload="auto">
-                <source src="https://github.com/nanaduo1/crazeai/blob/main/images/video/aHR0cHM6Ly9hc3NldHMuZ3Jvay5jb20vdXNlcnMvYWUyOWIwYjYtMDdhNS00MmY3LWFjN2EtNjljNWRkNTQxOGU5L2dlbmVyYXRlZC9iOWJjN2UxNy0wMzRiLTRhNmEtOGM5OC0wOTMxYjU0YzhiYTkvZ2VuZXJhdGVkX3ZpZGVvX2hkLm1wNA%3D%3D.mp4?raw=true" type="video/mp4">
-            </video>
-            <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] group-hover:bg-black/20 transition-all">
-                <div class="w-16 h-16 rounded-full border-2 border-white flex items-center justify-center pl-1 hover:bg-white hover:text-black transition-colors">
-                    <i data-lucide="play" class="w-8 h-8 fill-current"></i>
-                </div>
-            </div>
-        </div>
-    </div>
+                // Function to close the modal
+                function closeVideoModal() {
+                    const modal = document.getElementById('videoModal');
+                    const modalVideo = document.getElementById('modalVideoPlayer');
+                    
+                    modalVideo.pause();
+                    modalVideo.src = ""; 
+                    modal.classList.add('hidden');
+                }
 
-    <!-- Video Modal Overlay -->
-    <!-- z-index set high to ensure it sits on top. Hidden by default. -->
-    <div id="videoModal" class="fixed inset-0 z-[100] hidden" role="dialog" aria-modal="true">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-md transition-opacity" onclick="closeVideoModal()"></div>
-        
-        <!-- Modal Content Container (Centered) -->
-        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
-            <!-- Video Player Box: 9:16 Aspect Ratio -->
-            <!-- max-h-[90vh] prevents it from being taller than the screen -->
-            <div class="relative w-full max-w-sm aspect-[9/16] bg-black rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10 pointer-events-auto transform transition-all duration-300">
-                
-                <!-- Close Button -->
-                <button onclick="closeVideoModal()" class="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-white/20 text-white rounded-full backdrop-blur-sm transition-colors group">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-
-                <!-- The Player -->
-                <video id="modalVideoPlayer" class="w-full h-full object-contain" controls playsinline>
-                    <source src="" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Function to open the modal
-        function openVideoModal(element) {
-            const modal = document.getElementById('videoModal');
-            const modalVideo = document.getElementById('modalVideoPlayer');
-            
-            // Find the source URL from the clicked card
-            const sourceUrl = element.querySelector('source').src;
-            
-            if (sourceUrl) {
-                modalVideo.src = sourceUrl;
-                modal.classList.remove('hidden');
-                
-                // Play video after a slight delay to ensure loading
-                setTimeout(() => {
-                    modalVideo.play().catch(e => console.log('Autoplay prevented:', e));
-                }, 100);
-            }
-        }
-
-        // Function to close the modal
-        function closeVideoModal() {
-            const modal = document.getElementById('videoModal');
-            const modalVideo = document.getElementById('modalVideoPlayer');
-            
-            modalVideo.pause();
-            modalVideo.src = ""; // Clear source to stop buffering
-            modal.classList.add('hidden');
-        }
-
-        // Close modal on Escape key press
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") {
-                closeVideoModal();
-            }
-        });
-    </script>
-</section>
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === "Escape") {
+                        closeVideoModal();
+                    }
+                });
+            </script>
+        </section>
 
         <!-- Contact -->
-        <section id="section-contact" class="py-20 relative">
+        <!-- Optimization: Reduced py-20 to py-10 md:py-20 for better mobile spacing -->
+        <section id="section-contact" class="py-10 md:py-20 relative">
             <div class="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
                  <h2 class="text-[10rem] md:text-[20rem] font-black text-white whitespace-nowrap">X</h2>
             </div>
@@ -561,6 +566,18 @@
         btn.addEventListener('click', () => {
             menu.classList.toggle('hidden');
         });
+
+        // Cinematic Tap Toggle
+        function toggleCinematic(el) {
+            // Remove active class from other siblings to keep it clean (optional, keeping one active at a time)
+            const allCards = document.querySelectorAll('.cinematic-card');
+            allCards.forEach(card => {
+                if(card !== el) card.classList.remove('active-tap');
+            });
+            
+            // Toggle current
+            el.classList.toggle('active-tap');
+        }
 
         // Hero Canvas Animation (Speed Grid)
         const canvas = document.getElementById('speed-grid');
