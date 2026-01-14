@@ -1,0 +1,52 @@
+name: Generate JSON
+
+on:
+  push:
+    paths:
+      - "content/prompts/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install gray-matter fs-extra
+
+      - name: Generate JSON
+        run: |
+          node <<EOF
+          const fs = require('fs-extra');
+          const path = require('path');
+          const matter = require('gray-matter');
+
+          const dir = 'content/prompts';
+          const files = fs.readdirSync(dir);
+
+          const data = files.map(file => {
+            const content = fs.readFileSync(path.join(dir, file), 'utf-8');
+            const parsed = matter(content);
+            return {
+              title: parsed.data.title,
+              image: parsed.data.image,
+              prompt: parsed.data.prompt,
+              tags: parsed.data.tags || []
+            };
+          });
+
+          fs.writeFileSync('prompts.json', JSON.stringify(data, null, 2));
+          EOF
+
+      - name: Commit JSON
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add prompts.json
+          git commit -m "Update prompts.json"
+          git push
