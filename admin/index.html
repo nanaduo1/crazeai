@@ -3,191 +3,157 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>CRAZE ADMIN</title>
+  <title>Content Manager</title>
   
-  <!-- 字体 -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
-  <!-- Tailwind -->
+  <!-- 引入 Tailwind CSS (仅用于预览区域的样式渲染) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Netlify Identity -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
   <style>
-    /* ==========================================================================
-       1. 全局样式重置 (Global Reset) - 确立赛博朋克基调
-       ========================================================================== */
-    :root {
-      --neon-blue: #00f3ff;
-      --neon-red: #ff0055;
-      --bg-dark: #000000;
-      --bg-panel: #0d0d0d;
-      --border: #333;
+    /* =========================================
+       1. 基础设置 (系统默认字体，清爽风格)
+       ========================================= */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+      background-color: #f4f5f7 !important; /* 浅灰背景 */
     }
 
-    body, html {
-      background-color: var(--bg-dark) !important;
-      font-family: 'Rajdhani', sans-serif !important;
-      overflow: hidden; /* 防止整个页面滚动，让内部滚动 */
-    }
+    /* 滚动条优化 */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #999; }
 
-    /* 滚动条美化 */
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: #000; }
-    ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--neon-blue); }
-
-    /* ==========================================================================
-       2. 桌面端样式 (Desktop Styles)
-       ========================================================================== */
-    /* 顶部导航 */
+    /* =========================================
+       2. UI 组件优化 (桌面+移动通用)
+       ========================================= */
+    
+    /* 顶部导航栏 - 纯白干净 */
     [class*="AppHeader-header"] {
-      background-color: rgba(0,0,0,0.95) !important;
-      border-bottom: 1px solid #222 !important;
+      background-color: #ffffff !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+      color: #333 !important;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
       height: 60px !important;
     }
-
-    /* 侧边栏 */
+    
+    /* 侧边栏 - 浅灰 */
     [class*="SidebarContainer"] {
-      background-color: var(--bg-panel) !important;
-      border-right: 1px solid var(--border) !important;
-    }
-    [class*="SidebarNavLink"] {
-      color: #666 !important;
-      font-family: 'Orbitron', sans-serif !important;
-      letter-spacing: 1px;
+      background-color: #ffffff !important;
+      border-right: 1px solid #e2e8f0 !important;
     }
     [class*="SidebarNavLink"].sidebar-active {
-      color: var(--neon-blue) !important;
-      background: linear-gradient(90deg, rgba(0,243,255,0.1), transparent) !important;
-      border-left: 3px solid var(--neon-blue) !important;
+      color: #2563eb !important; /* 选中蓝色 */
+      background-color: #eff6ff !important; /* 浅蓝背景 */
+      border-left: 3px solid #2563eb !important;
     }
 
-    /* 编辑器区域 */
-    [class*="EditorContainer"] { background-color: var(--bg-dark) !important; }
-    [class*="EditorToolbar"] { background-color: #000 !important; border-bottom: 1px solid #333 !important; }
-    
-    /* 输入框 */
-    input, textarea, [class*="Select-control"] {
-      background-color: #111 !important;
-      border: 1px solid #333 !important;
-      color: #eee !important;
-      font-size: 16px !important;
-      border-radius: 0 !important;
+    /* 输入框 - 增大间距，视觉舒适 */
+    input[type="text"], textarea, [class*="Select-control"] {
+      border: 1px solid #cbd5e1 !important;
+      border-radius: 6px !important;
       padding: 12px !important;
+      font-size: 15px !important;
+      background: #fff !important;
+      color: #1e293b !important;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
     }
     input:focus, textarea:focus {
-      border-color: var(--neon-blue) !important;
-      box-shadow: 0 0 8px rgba(0, 243, 255, 0.3) !important;
+      border-color: #3b82f6 !important;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+      outline: none;
     }
+
+    /* 标签 Label */
     label {
-      color: var(--neon-blue) !important;
-      font-family: 'Orbitron', sans-serif !important;
-      font-size: 11px !important;
-      margin-bottom: 5px !important;
-      margin-top: 15px !important;
-      display: block !important;
+      color: #64748b !important;
+      font-weight: 600 !important;
+      font-size: 13px !important;
+      margin-bottom: 6px !important;
+      margin-top: 20px !important;
     }
 
-    /* 按钮 */
-    button[class*="Button"] {
-      font-family: 'Orbitron', sans-serif !important;
-      text-transform: uppercase;
-      font-weight: bold;
-      border-radius: 0 !important;
+    /* 卡片列表 */
+    [class*="Card"] {
+      background: #fff !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 8px !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
     }
-    button[class*="Button-success"] {
-      background-color: var(--neon-red) !important;
-      color: white !important;
-      box-shadow: 0 0 10px rgba(255,0,85,0.4);
+    [class*="Card"]:hover {
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05) !important;
+      border-color: #3b82f6 !important;
     }
+    [class*="Card-cardTop"] { color: #1e293b !important; font-weight: 600; }
 
-    /* ==========================================================================
-       3. 移动端核心修复 (MOBILE OVERRIDES) - Max-width 800px
-       ========================================================================== */
+    /* =========================================
+       3. 移动端强制适配 (Max-width: 800px)
+       ========================================= */
     @media (max-width: 800px) {
       
-      /* A. 修复布局挤压：强制重置 Flex 结构 */
-      /* 找到 React 生成的分屏容器，强制改为垂直排列 */
+      /* A. 布局重构：强制上下堆叠 */
+      /* 覆盖 React SplitPane 的默认 Flex 样式 */
       div[style*="display: flex"][style*="height: 100%"] {
-        flex-direction: column !important;
+        display: block !important;
+        height: auto !important;
       }
-      
-      /* B. 隐藏侧边栏（默认占据屏幕太多） */
+
+      /* B. 隐藏侧边栏，给编辑器腾位置 */
       [class*="SidebarContainer"] {
-        display: none !important; /* 只有点击汉堡菜单时才通过 JS 显示，或者直接隐藏 */
+        display: none !important; 
       }
-      
-      /* C. 列表视图 (Collection) 修复 */
-      /* 强制单列 */
-      [class*="CollectionContainer"] main {
-        padding: 10px !important;
-      }
+
+      /* C. 列表页调整 */
+      [class*="CollectionContainer"] main { padding: 10px !important; }
       [class*="Card"] {
         width: 100% !important;
-        margin-bottom: 15px !important;
-        background: #0a0a0a !important;
-        border: 1px solid #333 !important;
+        margin-bottom: 12px !important;
       }
-      /* 隐藏列表页多余的视图切换按钮 */
+      /* 隐藏多余按钮 */
       [class*="CollectionTop-viewControls"] { display: none !important; }
 
-      /* D. 编辑器 (Editor) 深度修复 */
-      /* 1. 顶部发布栏优化 */
+      /* D. 编辑器区域优化 */
+      /* 1. 顶部发布栏固定 */
       [class*="EditorToolbar"] {
         position: sticky !important;
         top: 0;
-        z-index: 50;
-        padding: 8px !important;
-        justify-content: space-between !important;
+        z-index: 100;
+        background: #fff !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        padding: 10px !important;
       }
-      [class*="EditorToolbar-metadata"] { display: none !important; } /* 隐藏状态文字 */
-      
-      /* 2. 核心：拆分编辑器和预览 */
-      /* 强制编辑器面板宽度 100%，取消左右分屏逻辑 */
-      [class*="SplitPane"] {
-        display: block !important; /* 禁用 Flex */
-        overflow-y: auto !important;
-        height: auto !important;
-      }
-      
+      /* 隐藏发布状态文字，节省空间 */
+      [class*="EditorToolbar-metadata"] { display: none !important; }
+
+      /* 2. 编辑器面板 (上半部分) */
       [class*="EditorPanel"] {
         width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        padding-bottom: 20px !important;
         border-right: none !important;
-        padding-bottom: 50px !important;
       }
-      
-      /* 3. 预览面板在移动端 */
+
+      /* 3. 预览面板 (下半部分) */
       [class*="PreviewPaneContainer"] {
         width: 100% !important;
-        height: 500px !important; /* 给预览一个固定高度 */
-        border-top: 2px solid var(--neon-blue) !important;
+        height: auto !important;
+        min-height: 400px; /* 保证有足够高度显示预览 */
+        border-top: 4px solid #e2e8f0 !important; /* 分割线 */
+        background: #f8fafc !important;
         display: block !important;
-        background: #000 !important;
+        padding-bottom: 50px !important;
       }
 
-      /* E. 控件优化 */
-      /* 图片上传框太大，缩小 padding */
-      [class*="FileWidgetButton"] {
-        padding: 15px !important;
-        font-size: 12px !important;
-      }
+      /* E. 细节优化 */
+      /* iOS 防缩放：字体强制 16px */
+      input, textarea { font-size: 16px !important; }
       
-      /* 增大输入框文字防止看不清 */
-      input, textarea {
-        font-size: 16px !important;
-        background: #0d0d0d !important;
-      }
+      /* 图片上传按钮加大 */
+      [class*="FileWidgetButton"] { padding: 16px !important; background: #f8fafc !important; }
 
-      /* F. 弹窗修复 */
-      /* 如下拉菜单被键盘顶上去的问题 */
-      [class*="Dropdown-content"] {
-        position: fixed !important;
-        top: 20% !important;
-        left: 5% !important;
-        width: 90% !important;
-        max-height: 60vh !important;
-        overflow-y: auto !important;
-      }
+      /* 汉堡菜单颜色修复 */
+      button[class*="AppHeader-menuButton"] { color: #333 !important; }
     }
   </style>
 </head>
@@ -196,49 +162,53 @@
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   
   <script>
-    // --- 移动端优化版预览组件 ---
-    var MobilePromptsPreview = createClass({
+    // --- 简约版预览组件 ---
+    // 即使后台是简约的，预览也应该让你看到内容的结构
+    var SimplePreview = createClass({
       render: function() {
         var entry = this.props.entry;
         var image = entry.getIn(['data', 'image']);
-        var title = entry.getIn(['data', 'title']) || 'Untitled';
+        var title = entry.getIn(['data', 'title']) || '无标题';
         var tool = entry.getIn(['data', 'tool']) || 'AI Tool';
+        var prompt = entry.getIn(['data', 'prompt']) || '暂无 Prompt 内容...';
         
-        // 使用 h 函数构建 DOM
-        return h('div', {className: 'bg-black text-white p-4 w-full'},
-          h('div', {className: 'text-xs text-gray-500 mb-2 uppercase font-mono'}, '/// PREVIEW'),
+        // 使用 h 函数构建 (亮色背景预览)
+        return h('div', {className: 'w-full max-w-md mx-auto bg-white min-h-screen p-4 border-x border-gray-100 shadow-sm'},
           
-          // 模拟卡片
-          h('div', {className: 'border border-gray-800 bg-gray-900 w-full relative aspect-[3/4] mb-4'},
-            image 
+          h('div', {className: 'text-xs text-gray-400 mb-4 font-bold tracking-wider text-center'}, 'PREVIEW 预览模式'),
+
+          // 图片卡片
+          h('div', {className: 'rounded-lg overflow-hidden border border-gray-200 shadow-sm mb-6 aspect-[3/4] relative bg-gray-50'},
+             image 
               ? h('img', {src: image, className: 'w-full h-full object-cover'}) 
-              : h('div', {className: 'flex items-center justify-center h-full text-gray-700 text-xs'}, 'NO IMAGE'),
-            
-            h('div', {className: 'absolute bottom-0 left-0 w-full p-3 bg-gradient-to-t from-black to-transparent'},
-              h('span', {className: 'inline-block px-2 py-0.5 bg-pink-600 text-[10px] font-bold mb-1'}, tool),
-              h('h3', {className: 'font-mono text-lg font-bold truncate'}, title)
-            )
+              : h('div', {className: 'flex flex-col items-center justify-center h-full text-gray-400 text-sm'}, 
+                  h('span', {}, '🖼️'),
+                  h('span', {className: 'mt-2'}, '此处显示图片')
+                ),
+             
+             // 底部简单的遮罩文字
+             h('div', {className: 'absolute bottom-0 left-0 w-full p-3 bg-gradient-to-t from-black/60 to-transparent text-white'},
+                h('div', {className: 'text-[10px] font-bold bg-blue-600 inline-block px-1.5 py-0.5 rounded mb-1'}, tool),
+                h('div', {className: 'font-bold text-sm truncate'}, title)
+             )
           ),
-          
-          h('div', {className: 'text-xs text-cyan-400 font-mono mt-2'}, 'Changes update automatically above.')
+
+          // 文字信息
+          h('div', {className: 'bg-gray-50 p-4 rounded border border-gray-200'},
+            h('h3', {className: 'text-xs font-bold text-gray-500 uppercase mb-2'}, 'Prompt 内容'),
+            h('p', {className: 'text-gray-700 text-sm font-mono leading-relaxed break-all'}, prompt)
+          )
         );
       }
     });
 
-    // 注册预览
-    CMS.registerPreviewTemplate("prompts", MobilePromptsPreview);
+    // 注册到 "prompts" 集合
+    CMS.registerPreviewTemplate("prompts", SimplePreview);
     
-    // 注入 Tailwind 到预览 iframe
+    // 注入 Tailwind 到预览 iframe (方便排版)
     CMS.registerPreviewStyle("https://cdn.tailwindcss.com");
-    // 注入样式修正预览 iframe 的滚动条
-    CMS.registerPreviewStyle("body { background-color: #000; color: #fff; } ::-webkit-scrollbar { width: 0px; }");
-
-    // 监听 DOM 变化，强制修复一些 JS 生成的样式问题 (高级 Hack)
-    document.addEventListener("DOMContentLoaded", function() {
-       // 如果需要可以在这里添加额外的 JS 逻辑
-    });
+    // 修正 iframe 内的滚动条
+    CMS.registerPreviewStyle("body { background-color: #fff; } ::-webkit-scrollbar { width: 0; }");
   </script>
 </body>
 </html>
-
-
