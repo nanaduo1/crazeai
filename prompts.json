@@ -90,6 +90,13 @@
       "image": "/images/uploads/generated-image-november-08-2025-1_58pm.png",
       "tool": "Midjourney V6",
       "prompt": "11"
+    },
+    {
+      "id": "014",
+      "title": "22",
+      "image": "/images/uploads/generated-image-november-08-2025-1_58pm.png",
+      "tool": "Niji Journey",
+      "prompt": "11"
     }
   ]
 }
