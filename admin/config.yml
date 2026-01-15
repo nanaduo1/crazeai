@@ -22,5 +22,5 @@ collections:
               - {label: "ID (Unique Number)", name: "id", widget: "string", default: "001"}
               - {label: "Title", name: "title", widget: "string"}
               - {label: "Image", name: "image", widget: "image"}
-              - {label: "AI Tool", name: "tool", widget: "select", options: ["Midjourney V6", "Gemini Pro", "Stable Diffusion XL", "DALL-E 3", "Niji Journey"]}
+              - {label: "AI Tool", name: "tool", widget: "select", options: ["Nano-banana Pro", "Midjourney V6", "ChatGPT", "Doubao", "Kling", "Niji Journey"]}
               - {label: "Prompt Text", name: "prompt", widget: "text"}
