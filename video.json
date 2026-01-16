@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "title": "NEON RAINWALKER",
+      "tool": "RUNWAY GEN-2",
+      "video": "https://cdn.coverr.co/videos/coverr-walking-in-tokyo-at-night-4528/1080p.mp4",
+      "prompt": "Cinematic shot, vertical aspect ratio, cyberpunk aesthetic, a cyborg woman walking through rainy neon streets of Tokyo, reflection in puddles, atmospheric fog, 8k resolution, highly detailed texture, slow motion."
+    },
+    {
+      "title": "ABSTRACT DATA FLOW",
+      "tool": "SORA",
+      "video": "https://cdn.coverr.co/videos/coverr-abstract-neon-lights-tunnel-3453/1080p.mp4",
+      "prompt": "Abstract representation of data stream, high speed information tunnel, blue and pink glowing lines, seamless loop, 3d render, octane render style."
+    },
+    {
+      "title": "FUTURE SYNTHWAVE",
+      "tool": "PIKA LABS",
+      "video": "https://cdn.coverr.co/videos/coverr-driving-through-a-neon-tunnel-4512/1080p.mp4",
+      "prompt": "Synthwave style driving loop, retro sunset, grid landscape, endless road, purple and teal color palette, vhs glitch effect overlay."
+    },
+    {
+      "title": "DIGITAL PORTRAIT",
+      "tool": "LUMA DREAM MACHINE",
+      "video": "https://cdn.coverr.co/videos/coverr-woman-with-neon-lights-4428/1080p.mp4",
+      "prompt": "Close up portrait of a futuristic fashion model, bioluminescent makeup, dynamic lighting changing colors, sharp focus on eyes, shallow depth of field."
+    }
+  ]
+}
