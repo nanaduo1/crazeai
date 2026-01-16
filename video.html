@@ -122,7 +122,6 @@
                 <a href="index.html#section-ancient" class="nav-link hover:text-white transition-colors">ANCIENT</a>
                 <a href="index.html#section-series" class="nav-link hover:text-white transition-colors">CINEMATIC</a>
                 <a href="index.html#section-virtual" class="nav-link hover:text-white transition-colors">PLATE</a>
-                <!-- Updated Active Link for VIDEO -->
                 <a href="video.html" class="nav-link hover:text-white transition-colors text-yellow-400">VIDEOS</a>
                 <a href="prompts.html" class="nav-link hover:text-white transition-colors text-cyan-400">PROMPTS</a>
                 <a href="#section-contact" class="nav-link text-pink-500 hover:text-pink-400 transition-colors">CONTACT</a>
@@ -141,7 +140,6 @@
     </header>
 
     <!-- Page Title / Hero -->
-    <!-- Feel free to change the background image to something more 'video' related -->
     <div class="pt-32 pb-10 text-center border-b border-gray-800 bg-[url('/images/part4/IMG_1902.jpeg')] bg-cover bg-center bg-no-repeat relative">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
         <div class="relative z-10">
@@ -154,7 +152,6 @@
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 py-12 w-full relative z-10">
 
         <!-- Grid Container -->
-        <!-- Using aspect-[9/16] for vertical video cards -->
         <div id="video-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 mb-12">
             <!-- Content injected via JS -->
         </div>
@@ -221,9 +218,10 @@
                 </button>
 
                 <!-- Video Player Side -->
-                <div class="w-full md:w-3/5 bg-black flex items-center justify-center relative">
-                    <!-- The modal video player -->
-                    <video id="modalVideoPlayer" class="max-w-full max-h-[50vh] md:max-h-[90vh] w-auto h-auto object-contain shadow-lg" controls playsinline loop>
+                <!-- Updated: Background black to frame the vertical video -->
+                <div class="w-full md:w-3/5 bg-black flex items-center justify-center relative p-4">
+                    <!-- The modal video player: Enforced 9:16 Aspect Ratio -->
+                    <video id="modalVideoPlayer" class="aspect-[9/16] h-auto max-h-full w-auto object-cover shadow-2xl border border-gray-800/50" controls playsinline loop>
                         <source src="" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
@@ -282,12 +280,9 @@
     // --- FETCH DATA FROM VIDEO.JSON ---
     async function fetchVideos() {
         try {
-            // Load from video.json instead of prompts.json
             const response = await fetch('video.json?v=' + new Date().getTime());
             const data = await response.json();
             
-            // Assuming the JSON structure is { "items": [ ... ] } or just an array
-            // If data is just an array, use data directly. If it has a root key, use that.
             const items = data.items || data;
             
             if (Array.isArray(items)) {
@@ -319,16 +314,16 @@
 
         items.forEach(item => {
             const card = document.createElement('div');
-            // Added aspect-[9/16] for vertical layout
-            card.className = 'prompt-card bg-gray-900 group cursor-pointer aspect-[9/16] relative rounded-sm';
+            // MODIFICATION: Changed aspect ratio to 3:4 (vertical rectangle but wider than 9:16)
+            card.className = 'prompt-card bg-gray-900 group cursor-pointer aspect-[3/4] relative rounded-sm';
             card.onclick = () => openModal(item);
             
-            // Using <video> tag for grid items
-            // muted loop playsinline autoplay allows it to move without sound
-            // object-cover ensures it fills the vertical card nicely
+            // MODIFICATION: Added 'poster' attribute for thumbnail support
+            // Using object-cover to Ensure the 3:4 card is filled completely
             card.innerHTML = `
                 <video 
                     src="${item.video}" 
+                    poster="${item.thumbnail || ''}"
                     class="w-full h-full object-cover" 
                     muted loop playsinline autoplay
                 ></video>
@@ -378,6 +373,9 @@
 
     function openModal(item) {
         modalVideo.src = item.video;
+        // Also set poster on modal if desired, though usually auto-play covers it
+        if(item.thumbnail) modalVideo.poster = item.thumbnail;
+        
         modalTitle.innerText = item.title;
         modalTool.innerText = item.tool;
         modalPrompt.innerText = item.prompt;
