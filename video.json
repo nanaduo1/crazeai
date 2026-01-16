@@ -3,8 +3,8 @@
     {
       "title": "NEON RAINWALKER",
       "tool": "RUNWAY GEN-2",
-      "image": "https://images.unsplash.com/photo-1565523057632-4720478a846c?q=80&w=800&auto=format&fit=crop",
-      "video": "https://cdn.coverr.co/videos/coverr-walking-in-tokyo-at-night-4528/1080p.mp4",
+      "image": "/images/part4/IMG_1902.jpeg",
+      "video": "/video/black%20malo.mp4",
       "prompt": "Cinematic shot, vertical aspect ratio, cyberpunk aesthetic, a cyborg woman walking through rainy neon streets of Tokyo, reflection in puddles, atmospheric fog, 8k resolution, highly detailed texture, slow motion."
     },
     {
@@ -100,4 +100,5 @@
     }
   ]
 }
+
 
