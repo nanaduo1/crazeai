@@ -53,19 +53,19 @@
             box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
             border-color: var(--neon-blue);
         }
-        /* Gradient Overlay */
+        /* Gradient Overlay - Adjusted for static images */
         .prompt-card::before {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            opacity: 0.6;
+            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+            opacity: 0.4;
             transition: opacity 0.3s ease;
             z-index: 1;
             pointer-events: none;
         }
         .prompt-card:hover::before {
-            opacity: 0.3; /* Lighten overlay on hover to see video better */
+            opacity: 0.1; 
         }
         
         /* Modal Animation */
@@ -314,21 +314,24 @@
 
         items.forEach(item => {
             const card = document.createElement('div');
-            // MODIFICATION: Changed aspect ratio to 3:4 (vertical rectangle but wider than 9:16)
-            card.className = 'prompt-card bg-gray-900 group cursor-pointer aspect-[3/4] relative rounded-sm';
+            // MODIFICATION: Aspect ratio 3:4
+            card.className = 'prompt-card bg-gray-900 group cursor-pointer aspect-[3/4] relative rounded-sm overflow-hidden';
             card.onclick = () => openModal(item);
             
-            // MODIFICATION: Added 'poster' attribute for thumbnail support
-            // Using object-cover to Ensure the 3:4 card is filled completely
+            // MODIFICATION: 
+            // 1. Replaced <video> with <img> for static cover
+            // 2. Removed transform/translate classes from the text container (always visible)
+            // 3. Added zoom effect to image on hover
+            // 4. Added gradient background behind text for readability
+            
             card.innerHTML = `
-                <video 
-                    src="${item.video}" 
-                    poster="${item.thumbnail || ''}"
-                    class="w-full h-full object-cover" 
-                    muted loop playsinline autoplay
-                ></video>
+                <img 
+                    src="${item.thumbnail}" 
+                    alt="${item.title}"
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                >
                 
-                <div class="absolute bottom-0 left-0 w-full p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20">
+                <div class="absolute bottom-0 left-0 w-full p-4 z-20 bg-gradient-to-t from-black via-black/70 to-transparent pt-8">
                     <span class="inline-block px-2 py-0.5 bg-pink-600 text-white text-[10px] font-bold tracking-wider mb-1">${item.tool}</span>
                     <h3 class="text-white font-mono text-sm truncate shadow-black drop-shadow-md">${item.title}</h3>
                 </div>
@@ -435,5 +438,3 @@
     </script>
 </body>
 </html>
-
-
